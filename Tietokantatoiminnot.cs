@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 
-namespace Sovelluskehitys_esimerkki
+namespace Oma_sovellus
 {
     internal class Tietokantatoiminnot
     {
@@ -38,7 +38,7 @@ namespace Sovelluskehitys_esimerkki
             SqlConnection kanta = new SqlConnection(polku);
             kanta.Open();
 
-            SqlCommand komento = new SqlCommand("SELECT * FROM tuotteet", kanta);
+            SqlCommand komento = new SqlCommand("SELECT * FROM autot", kanta);
             SqlDataReader lukija = komento.ExecuteReader();
 
             DataTable dt = new DataTable();
@@ -46,7 +46,7 @@ namespace Sovelluskehitys_esimerkki
             dt.Columns.Add("TUOTE", typeof(string));
 
             kombo1.ItemsSource = dt.DefaultView;
-            kombo1.DisplayMemberPath = "TUOTE";
+            kombo1.DisplayMemberPath = "ID";
             kombo1.SelectedValuePath = "ID";
 
             kombo2.ItemsSource = dt.DefaultView;
