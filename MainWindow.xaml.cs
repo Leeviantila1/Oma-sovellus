@@ -21,7 +21,7 @@ namespace Oma_sovellus
     {
         private string solun_arvo;
 
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2002137\\Documents\\Tietokanta_oma_sovellus.mdf;Integrated Security=True;Connect Timeout=30";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\antil\\OneDrive\\Tiedostot\\Tietokanta_oma_sovellus_1.mdf;Integrated Security=True;Connect Timeout=30";
 
         Tietokantatoiminnot tkt;
 
@@ -30,19 +30,19 @@ namespace Oma_sovellus
             InitializeComponent();
             tkt = new Tietokantatoiminnot();
 
-            tkt.paivitaComboBox(combo_autot, combo_autot2);
+            tkt.paivitaComboBox(combo_autot);
             //paivitaAsiakasComboBox();
 
 
 
             tkt.paivitaDataGrid("SELECT * FROM autot", "tuotteet", huollossa_olevat_autot);
-            //tkt.paivitaDataGrid("SELECT * FROM asiakkaat", "asiakkaat", asiakas_lista);
+            tkt.paivitaDataGrid("SELECT * FROM työntekijät", "työntekijät", tyontekijat_taulu);
            // tkt.paivitaDataGrid("SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilaukset_lista);
             //tkt.paivitaDataGrid("SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu ='1'", "toimitetut", toimitetut_lista);
         
         }
         
-
+        // painike lisää auto
         private void painike_lisaa_Click(object sender, RoutedEventArgs e)
         {
             SqlConnection kanta = new SqlConnection(polku);
@@ -57,6 +57,23 @@ namespace Oma_sovellus
 
             tkt.paivitaDataGrid("SELECT * FROM autot", "autot", huollossa_olevat_autot);
             tkt.paivitaComboBox(combo_autot, combo_autot2);
+        }
+
+        // painike lisää työukko
+        private void painike_lisaa_ukko(object sender, RoutedEventArgs e)
+        {
+            SqlConnection kanta = new SqlConnection(polku);
+            kanta.Open();
+
+            string sql = "INSERT INTO työntekijät (nimi, työnumero) VALUES ('" + ukko_nimi.Text + "','" + ukko_numero.Text + "')";
+
+            SqlCommand komento = new SqlCommand(sql, kanta);
+            komento.ExecuteNonQuery();
+
+            kanta.Close();
+
+            tkt.paivitaDataGrid("SELECT * FROM työntekijät", "työntekijät", tyontekijat_taulu);
+            tkt.paivitaComboBox2(combo_ukot, combo_ukot2);
         }
 
 
@@ -88,6 +105,8 @@ namespace Oma_sovellus
             kanta.Close();
         }
         */
+
+        // auton poisto nappula
         private void painike_poista_auto(object sender, RoutedEventArgs e)
         {
             SqlConnection kanta = new SqlConnection(polku);
@@ -99,8 +118,24 @@ namespace Oma_sovellus
             kanta.Close();
 
             tkt.paivitaDataGrid("SELECT * FROM autot", "autot", huollossa_olevat_autot);
-            tkt.paivitaComboBox(combo_autot, combo_autot2);
+            tkt.paivitaComboBox(combo_autot);
         }
+
+        // työntekijän poisto nappula
+        private void painike_poista_työntekijä(object sender, RoutedEventArgs e)
+        {
+            SqlConnection kanta = new SqlConnection(polku);
+            kanta.Open();
+
+            string id = combo_ukot.SelectedValue.ToString();
+            SqlCommand komento = new SqlCommand("DELETE FROM työntekijät WHERE id_työntekijä =" + id + ";", kanta);
+            komento.ExecuteNonQuery();
+            kanta.Close();
+
+            tkt.paivitaDataGrid("SELECT * FROM työntekijät", "työntekijät", tyontekijat_taulu);
+            tkt.paivitaComboBox2(combo_ukot);
+        }
+
         /*
         private void tuote_lista_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
