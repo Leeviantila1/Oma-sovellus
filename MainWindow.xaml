@@ -63,7 +63,7 @@
                     <Button x:Name="painike_lisää_työ" Content="Lisää työ" HorizontalAlignment="Left" Margin="421,274,0,0" VerticalAlignment="Top" Height="40" Width="144" Click="painike_lisaa_tyo"/>
                     <ComboBox x:Name="combo_autot2" HorizontalAlignment="Left" Margin="261,266,0,0" VerticalAlignment="Top" Width="120"/>
                     <ComboBox x:Name="combo_ukot2" HorizontalAlignment="Left" Margin="261,303,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.508,-0.345"/>
-                    <Label Content="Valitse huollettava auto ja sille vapaan oleva työntekijä." HorizontalAlignment="Center" Margin="0,227,0,0" VerticalAlignment="Top"/>
+                    <Label Content="Valitse huollettava auto ja sille vapaana oleva työntekijä." HorizontalAlignment="Center" Margin="0,227,0,0" VerticalAlignment="Top"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Auton tilanne">

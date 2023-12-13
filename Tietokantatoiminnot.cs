@@ -11,7 +11,7 @@ namespace Oma_sovellus
 {
     internal class Tietokantatoiminnot
     {
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\antil\\OneDrive\\Tiedostot\\Tietokanta_oma_sovellus_1.mdf;Integrated Security=True;Connect Timeout=30";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2002137\\Documents\\Tietokanta_oma_sovellus.mdf;Integrated Security=True;Connect Timeout=30";
 
         public void paivitaDataGrid(string kysely, string taulu, DataGrid grid)
         {
@@ -44,20 +44,20 @@ namespace Oma_sovellus
 
             DataTable dt = new DataTable();
             dt.Columns.Add("ID", typeof(string));
-            dt.Columns.Add("TUOTE", typeof(string));
+            dt.Columns.Add("REKISTERINUMERO", typeof(string));
 
             kombo1.ItemsSource = dt.DefaultView;
             kombo1.DisplayMemberPath = "ID";
             kombo1.SelectedValuePath = "ID";
             kombo3.ItemsSource = dt.DefaultView;
-            kombo3.DisplayMemberPath = "ID";
+            kombo3.DisplayMemberPath = "REKISTERINUMERO";
             kombo3.SelectedValuePath = "ID";
 
             while (lukija.Read())
             {
                 int id = lukija.GetInt32(0);
-                string tuote = lukija.GetString(1);
-                dt.Rows.Add(id, tuote);
+                string rekisterinumero = lukija.GetString(2);
+                dt.Rows.Add(id, rekisterinumero);
             }
 
             lukija.Close();
@@ -75,19 +75,19 @@ namespace Oma_sovellus
 
             DataTable dt = new DataTable();
             dt.Columns.Add("ID", typeof(string));
-            dt.Columns.Add("TYÖNTEKIJÄ", typeof(string));
+            dt.Columns.Add("TYÖNUMERO", typeof(string));
 
             kombo2.ItemsSource = dt.DefaultView;
             kombo2.DisplayMemberPath = "ID";
             kombo2.SelectedValuePath = "ID";
             kombo4.ItemsSource = dt.DefaultView;
-            kombo4.DisplayMemberPath = "ID";
+            kombo4.DisplayMemberPath = "TYÖNUMERO";
             kombo4.SelectedValuePath = "ID";
 
             while (lukija.Read())
             {
                 int id = lukija.GetInt32(0);
-                string tuote = lukija.GetString(1);
+                string tuote = lukija.GetString(2);
                 dt.Rows.Add(id, tuote);
             }
 

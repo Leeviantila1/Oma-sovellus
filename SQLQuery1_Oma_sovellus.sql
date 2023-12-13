@@ -4,7 +4,7 @@ CREATE TABLE työn_tilanne (id_työn_tilanne INTEGER IDENTITY(1,1) PRIMARY KEY, ni
 
 CREATE TABLE työntekijät (id_työntekijä INTEGER IDENTITY (1,1) PRIMARY KEY, nimi VARCHAR(50), työnumero VARCHAR(50));
 
-CREATE TABLE työnjako (id_työnjako INTEGER IDENTITY (1,1) PRIMARY KEY, id_työntekijä INTEGER REFERENCES työntekijät ON DELETE CASCADE, id_auto INTEGER REFERENCES autot ON DELETE CASCADE);
+CREATE TABLE työnjako (id_työnjako INTEGER IDENTITY (1,1) PRIMARY KEY, työntekijä VARCHAR(50), rekisterinumero VARCHAR(50));
 
 
 INSERT INTO autot (merkki, rekisterinumero, miksi_huollossa) VALUES ('Volvo', 'SSS-888', 'Jarrupalat');
