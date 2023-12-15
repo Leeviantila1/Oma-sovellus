@@ -155,6 +155,25 @@ namespace Oma_sovellus
             tkt.paivitaComboBox2(combo_ukot, combo_ukot);
         }
 
+        private void painike_valmis_auto(object sender, RoutedEventArgs e)
+        {
+            DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
+            String id_auti = rivinakyma[0].ToString();
+
+            SqlConnection kanta = new SqlConnection(polku);
+            kanta.Open();
+
+            string sql = "UPDATE autojen_tilanne SET valmis=1 WHERE id='" + id_auti + "';";
+
+            SqlCommand komento = new SqlCommand(sql, kanta);
+            komento.ExecuteNonQuery();
+            kanta.Close();
+
+            tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä ", "työnjako", työnjako_lista);
+            tkt.paivitaDataGrid("SELECT   FROM työntekijät ty, autot a, työnjako tyo WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu ='1'", "valmiit", autojen_tilanne);
+
+        }
+
         /*
         private void tuote_lista_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
         {
@@ -250,24 +269,7 @@ namespace Oma_sovellus
 
         }
 
-        private void painike_toimita_Click(object sender, RoutedEventArgs e)
-        {
-            DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
-            String tilaus_id = rivinakyma[0].ToString();
-
-            SqlConnection kanta = new SqlConnection(polku);
-            kanta.Open();
-
-            string sql = "UPDATE tilaukset SET toimitettu=1 WHERE id='" + tilaus_id + "';";
-
-            SqlCommand komento = new SqlCommand(sql, kanta);
-            komento.ExecuteNonQuery();
-            kanta.Close();
-
-            tkt.paivitaDataGrid("SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilaukset_lista);
-            tkt.paivitaDataGrid("SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu ='1'", "toimitetut", toimitetut_lista);
-
-        }
+        
         */
     }
 }

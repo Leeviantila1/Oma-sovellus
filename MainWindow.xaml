@@ -52,11 +52,18 @@
             </TabItem>
             <TabItem Header="Työnjako">
                 <Grid Background="LightSteelBlue">
-                    <DataGrid x:Name="työnjako_lista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,30,204,164" AutoGenerateColumns="False">
+                    <DataGrid x:Name="työnjako_lista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,30,204,164" AutoGenerateColumns="False" SelectionChanged="työnjako_lista_SelectionChanged">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Korjausjono" Binding="{Binding Path='id_työnjako'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Auto" Binding="{Binding Path='rekisterinumero'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Työntekijä" Binding="{Binding Path='työntekijä'}" IsReadOnly="True"/>
+                            <DataGridTemplateColumn Header="Merkkaa valmiiksi">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Name="painike_valmis_auto" Content="Valmis" Click="painike_valmis"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
                     <Label Content="Auto" HorizontalAlignment="Left" Margin="217,264,0,0" VerticalAlignment="Top"/>
@@ -65,16 +72,17 @@
                     <ComboBox x:Name="combo_autot2" HorizontalAlignment="Left" Margin="261,266,0,0" VerticalAlignment="Top" Width="120"/>
                     <ComboBox x:Name="combo_ukot2" HorizontalAlignment="Left" Margin="261,303,0,0" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.508,-0.345"/>
                     <Label Content="Valitse huollettava auto ja sille työntekijä." HorizontalAlignment="Center" Margin="0,227,0,0" VerticalAlignment="Top"/>
+                    <TextBlock HorizontalAlignment="Left" Margin="614,107,0,0" TextWrapping="Wrap" Text="Kun huolto on valmis, merkka se valmiiksi." VerticalAlignment="Top" Height="34" Width="150"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Auton tilanne">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid x:Name="toimitetut_lista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,97,204,97" AutoGenerateColumns="False">
+                    <DataGrid x:Name="autojen_tilanne" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="152,77,152,76" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="id" Binding="{Binding Path='id'}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="asiakas" Binding="{Binding Path='asiakas'}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="tuote" Binding="{Binding Path='tuote'}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="toimitettu" Binding="{Binding Path='toimitettu'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="id" Binding="{Binding Path='id_auti'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Auto" Binding="{Binding Path='id_auto'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Korjaaja" Binding="{Binding Path='id_työntekijä'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Tilanne" Binding="{Binding Path='toimitettu'}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
