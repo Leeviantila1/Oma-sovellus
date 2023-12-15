@@ -15,11 +15,11 @@ INSERT INTO työntekijät (nimi, työnumero) VALUES ('Jari Purro', '1225');
 
 INSERT INTO työnjako (id_työntekijä, id_auto) VALUES (1, 2);
 
-
+DELETE  FROM työnjako;
 SELECT * FROM autot;
 
 SELECT * FROM työntekijät;
 
 SELECT * FROM työnjako;
-
-SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id
+SELECT ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä;
+SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id;
