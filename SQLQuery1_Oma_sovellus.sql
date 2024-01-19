@@ -2,7 +2,7 @@ CREATE TABLE autot (id_auto INTEGER IDENTITY(1,1) PRIMARY KEY, merkki TEXT, reki
 
 CREATE TABLE työntekijät (id_työntekijä INTEGER IDENTITY (1,1) PRIMARY KEY, nimi VARCHAR(50), työnumero VARCHAR(50));
 
-CREATE TABLE työnjako (id_työnjako INTEGER IDENTITY (1,1) PRIMARY KEY, työntekijä VARCHAR(50), rekisterinumero VARCHAR(50));
+CREATE TABLE työnjako (id_työnjako INTEGER IDENTITY (1,1) PRIMARY KEY, työntekijä VARCHAR(50), rekisterinumero VARCHAR(50), valmis BIT DEFAULT 0);
 
 CREATE TABLE autojen_tilanne (id_auti INTEGER IDENTITY (1,1) PRIMARY KEY, id_auto INTEGER REFERENCES autot ON DELETE CASCADE, id_työntekijä INTEGER REFERENCES työntekijät ON DELETE CASCADE, valmis BIT DEFAULT 0);
 
