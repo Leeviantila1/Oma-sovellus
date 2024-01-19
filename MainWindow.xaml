@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Oma_sovellus"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <TabControl Margin="0,25,0,0">
+    <Grid Margin="0,-28,0,28">
+        <TabControl Margin="0,53,0,-28">
             <TabItem Header="Auton lisäys">
                 <Grid Background="LightSteelBlue">
 
@@ -51,13 +51,13 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Työnjako">
-                <Grid Background="LightSteelBlue">
-                    <DataGrid x:Name="työnjako_lista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,30,204,164" AutoGenerateColumns="False" SelectionChanged="työnjako_lista_SelectionChanged">
+                <Grid Background="LightSteelBlue" Margin="32,0,-32,0">
+                    <DataGrid x:Name="työnjako_lista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,30,204,164" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Korjausjono" Binding="{Binding Path='id_työnjako'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Auto" Binding="{Binding Path='rekisterinumero'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Työntekijä" Binding="{Binding Path='työntekijä'}" IsReadOnly="True"/>
-                            <DataGridTemplateColumn Header="Merkkaa valmiiksi">
+                            <DataGridTemplateColumn Header="Valmis">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <Button Name="painike_valmis_auto" Content="Valmis" Click="painike_valmis"/>
@@ -82,13 +82,11 @@
                             <DataGridTextColumn Header="id" Binding="{Binding Path='id_auti'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Auto" Binding="{Binding Path='id_auto'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Korjaaja" Binding="{Binding Path='id_työntekijä'}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Tilanne" Binding="{Binding Path='toimitettu'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Tilanne" Binding="{Binding Path='valmis'}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
             </TabItem>
-
-            <TabItem Header="Tänne jotain??"/>
         </TabControl>
 
     </Grid>

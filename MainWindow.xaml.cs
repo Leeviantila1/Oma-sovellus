@@ -21,7 +21,7 @@ namespace Oma_sovellus
     {
         private string solun_arvo;
 
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\antil\\OneDrive\\Tiedostot\\Tietokanta_oma_sovellus_1.mdf;Integrated Security=True;Connect Timeout=30";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2002137\\Documents\\Tietokanta.mdf;Integrated Security=True;Connect Timeout=30";
 
         Tietokantatoiminnot tkt;
 
@@ -96,34 +96,7 @@ namespace Oma_sovellus
             tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä ", "työnjako", työnjako_lista);
             //tkt.paivitaDataGrid("SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilaukset_lista);
         }
-        /*
-        private void paivitaAsiakasComboBox()
-        {
-            SqlConnection kanta = new SqlConnection(polku);
-            kanta.Open();
-
-            SqlCommand komento = new SqlCommand("SELECT * FROM asiakkaat", kanta);
-            SqlDataReader lukija = komento.ExecuteReader();
-
-            DataTable dt = new DataTable();
-            dt.Columns.Add("ID", typeof(string));
-            dt.Columns.Add("NIMI", typeof(string));
-
-            combo_asiakkaat.ItemsSource = dt.DefaultView;
-            combo_asiakkaat.DisplayMemberPath = "NIMI";
-            combo_asiakkaat.SelectedValuePath = "ID";
-
-            while (lukija.Read())
-            {
-                int id = lukija.GetInt32(0);
-                string nimi = lukija.GetString(1);
-                dt.Rows.Add(id, nimi);
-            }
-
-            lukija.Close();
-            kanta.Close();
-        }
-        */
+        
 
         // auton poisto nappula
         private void painike_poista_auto(object sender, RoutedEventArgs e)
@@ -154,8 +127,8 @@ namespace Oma_sovellus
             tkt.paivitaDataGrid("SELECT * FROM työntekijät", "työntekijät", tyontekijat_taulu);
             tkt.paivitaComboBox2(combo_ukot, combo_ukot);
         }
-
-        private void painike_valmis_auto(object sender, RoutedEventArgs e)
+        // painike valmis
+        private void painike_valmis(object sender, RoutedEventArgs e)
         {
             DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
             String id_auti = rivinakyma[0].ToString();
@@ -163,113 +136,42 @@ namespace Oma_sovellus
             SqlConnection kanta = new SqlConnection(polku);
             kanta.Open();
 
-            string sql = "UPDATE autojen_tilanne SET valmis=1 WHERE id='" + id_auti + "';";
+            // Päivitä työnjako-tauluun
+            string tyonjakoUpdateSql = "UPDATE työnjako SET Valmis = 1 WHERE id_työnjako = '" + id_auti + "'";
+            SqlCommand komento = new SqlCommand(tyonjakoUpdateSql, kanta);
+            komento.ExecuteNonQuery();
+
+            // Päivitä autojen_tilanne-tauluun
+            string autojenTilanneUpdateSql = "UPDATE autojen_tilanne SET valmis = valmis WHERE id_auti = '" + id_auti + "'";
+            SqlCommand autojenTilanneUpdateKomento = new SqlCommand(autojenTilanneUpdateSql, kanta);
+            autojenTilanneUpdateKomento.ExecuteNonQuery();
+
+            kanta.Close();
+
+            // Päivitä DataGridit
+            tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä ", "työnjako", työnjako_lista);
+            tkt.paivitaDataGrid("SELECT ty.id_työntekijä as id_työntekijä, a.id_auto as id_auto, tyo.id_työnjako as id_auti  FROM työntekijät ty, autot a, työnjako tyo, autojen_tilanne auti WHERE ty.id_työntekijä=auti.id_työntekijä AND a.id_auto=auti.id_auto AND tyo.id_työnjako=auti.id_auti AND auti.valmis ='1'", "valmiit", autojen_tilanne);
+        }
+
+        /*
+        private void painike_valmis(object sender, RoutedEventArgs e)
+        {
+            DataRowView rivinakyma = (DataRowView)((Button)e.Source).DataContext;
+            String id_auti = rivinakyma[0].ToString();
+
+            SqlConnection kanta = new SqlConnection(polku);
+            kanta.Open();
+
+            string sql = "UPDATE autojen_tilanne SET valmis=1 WHERE id_auti='" + id_auti + "';";
 
             SqlCommand komento = new SqlCommand(sql, kanta);
             komento.ExecuteNonQuery();
             kanta.Close();
 
             tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä ", "työnjako", työnjako_lista);
-            tkt.paivitaDataGrid("SELECT   FROM työntekijät ty, autot a, työnjako tyo WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu ='1'", "valmiit", autojen_tilanne);
+            tkt.paivitaDataGrid("SELECT ty.id_työntekijä as id_työntekijä, a.id_auto as id_auto, tyo.id_työnjako as id_auti  FROM työntekijät ty, autot a, työnjako tyo, autojen_tilanne auti WHERE ty.id_työntekijä=auti.id_työntekijä AND a.id_auto=auti.id_auto AND tyo.id_työnjako=auti.id_auti AND auti.valmis ='1'", "valmiit", autojen_tilanne);
 
         }
-
-        /*
-        private void tuote_lista_BeginningEdit(object sender, DataGridBeginningEditEventArgs e)
-        {
-            int sarake = tuote_lista.CurrentCell.Column.DisplayIndex;
-            solun_arvo = (e.Row.Item as DataRowView).Row[sarake].ToString();
-
-            tilaviesti.Text = "Sarake: " + sarake + " Arvo: " + solun_arvo;
-        }
-
-        private void tuote_lista_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
-        {
-            try
-            {
-                int sarake = tuote_lista.CurrentCell.Column.DisplayIndex;
-                string uusi_arvo = ((TextBox)e.EditingElement).Text;
-
-                int tuote_id = int.Parse((e.Row.Item as DataRowView).Row[0].ToString());
-
-                if (solun_arvo != uusi_arvo)
-                {
-                    string kysely = "";
-                    string kanta_sarake = "";
-                    SqlConnection kanta = new SqlConnection(polku);
-                    kanta.Open();
-
-                    if (sarake == 1) kanta_sarake = "nimi";
-                    else if (sarake == 2) kanta_sarake = "hinta";
-
-                    kysely = "UPDATE tuotteet SET " + kanta_sarake + "='" + uusi_arvo + "' WHERE id=" + tuote_id;
-
-                    SqlCommand komento = new SqlCommand(kysely, kanta);
-                    komento.ExecuteNonQuery();
-
-                    kanta.Close();
-
-                    tilaviesti.Text = "Uusi arvo: " + uusi_arvo;
-
-                    tkt.paivitaComboBox(combo_tuotteet, combo_tuotteet_2);
-                }
-                else
-                {
-                    tilaviesti.Text = "Arvo ei muuttunut";
-                }
-            }
-            catch
-            {
-                tilaviesti.Text = "Muokkaus ei onnistunut";
-            }
-        }
-
-
-
-        private void painike_asiakas_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                SqlConnection kanta = new SqlConnection(polku);
-                kanta.Open();
-
-                string sql = "INSERT INTO asiakkaat (nimi, puhelinnumero) VALUES ('" + asiakas_nimi.Text + "','" + asiakas_puhelin.Text + "')";
-
-                SqlCommand komento = new SqlCommand(sql, kanta);
-                komento.ExecuteNonQuery();
-
-                kanta.Close();
-
-                tkt.paivitaDataGrid("SELECT * FROM asiakkaat", "asiakkaat", asiakas_lista);
-
-                tilaviesti.Text = "Asiakkaan lisääminen onnistui";
-            }
-            catch
-            {
-                tilaviesti.Text = "Asiakkaan lisääminen ei onnistunut";
-            }
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            SqlConnection kanta = new SqlConnection(polku);
-            kanta.Open();
-
-            string asiakasID = combo_asiakkaat.SelectedValue.ToString();
-            string tuoteID = combo_tuotteet_2.SelectedValue.ToString();
-
-            string sql = "INSERT INTO tilaukset (asiakas_id, tuote_id) VALUES ('" + asiakasID + "', '" + tuoteID + "')";
-
-            SqlCommand komento = new SqlCommand(sql, kanta);
-            komento.ExecuteNonQuery();
-            kanta.Close();
-
-            tkt.paivitaDataGrid("SELECT ti.id AS id, a.nimi AS asiakas, tu.nimi AS tuote, ti.toimitettu AS toimitettu  FROM tilaukset ti, asiakkaat a, tuotteet tu WHERE a.id=ti.asiakas_id AND tu.id=ti.tuote_id AND ti.toimitettu='0'", "tilaukset", tilaukset_lista);
-
-        }
-
-        
         */
     }
 }

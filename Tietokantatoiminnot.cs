@@ -11,7 +11,7 @@ namespace Oma_sovellus
 {
     internal class Tietokantatoiminnot
     {
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\antil\\OneDrive\\Tiedostot\\Tietokanta_oma_sovellus_1.mdf;Integrated Security=True;Connect Timeout=30";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\k2002137\\Documents\\Tietokanta.mdf;Integrated Security=True;Connect Timeout=30";
 
         public void paivitaDataGrid(string kysely, string taulu, DataGrid grid)
         {
