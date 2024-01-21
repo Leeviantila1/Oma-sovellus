@@ -21,7 +21,7 @@ namespace Oma_sovellus
     {
         private string solun_arvo;
 
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\k2002137\\OneDrive - Epedu O365\\3. Vuosi\\Sovelluskehitys\\Projekti1\\tuotekanta.mdf\";Integrated Security=True;Connect Timeout=30";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\antil\\OneDrive\\Tiedostot\\Tietokanta_oma_sovellus_1.mdf;Integrated Security=True;Connect Timeout=30";
 
         Tietokantatoiminnot tkt;
 
@@ -38,9 +38,16 @@ namespace Oma_sovellus
 
             tkt.paivitaDataGrid("SELECT * FROM autot", "autot", huollossa_olevat_autot);
             tkt.paivitaDataGrid("SELECT * FROM työntekijät", "työntekijät", tyontekijat_taulu);
-            //tkt.paivitaDataGrid("SELECT * FROM työnjako", "työnjako", työnjako_lista);
-            tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä AND tyo.valmis ='1' ", "työnjako", työnjako_lista);
-            tkt.paivitaDataGrid("SELECT tyo.id_työnjako as id_auti, a.id_auto as id_auto, ty.id_työntekijä as id_työntekijä, tyo.valmis as valmis  FROM työntekijät ty, autot a, työnjako tyo, autojen_tilanne auti WHERE ty.id_työntekijä=auti.id_työntekijä AND a.id_auto=auti.id_auto AND tyo.id_työnjako=auti.id_auti AND auti.valmis ='1'", "valmiit", autojen_tilanne);
+            
+            tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero " +
+                                    "AS työntekijä, a.rekisterinumero AS rekisterinumero  " +
+                                    "FROM työntekijät ty, autot a, työnjako tyo " +
+                                    "WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä AND tyo.valmis ='0' ",
+                                    "työnjako", työnjako_lista);
+            tkt.paivitaDataGrid("SELECT  a.id_auto as id_auto, tyo.valmis as tilanne  " +
+                                "FROM autot a, työnjako tyo, autojen_tilanne auti " +
+                                "WHERE  a.id_auto=auti.id_auto AND auti.tilanne ='1'",
+                                "valmiit", autojen_tilanne);
 
         }
         
@@ -135,15 +142,22 @@ namespace Oma_sovellus
 
                 SqlConnection kanta = new SqlConnection(polku);
                 kanta.Open();
+          
+            string sql = "UPDATE autojen_tilanne SET tilanne = 'valmis' WHERE id_auto='" + id_auti + "';";
 
-                string sql = "UPDATE autojen_tilanne SET valmis = 1 WHERE id_auti='" + id_auti + "';";
-
-                SqlCommand komento = new SqlCommand(sql, kanta);
+            SqlCommand komento = new SqlCommand(sql, kanta);
                 komento.ExecuteNonQuery();
                 kanta.Close();
 
-                tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä AND tyo.valmis ='1' ", "työnjako", työnjako_lista);
-                tkt.paivitaDataGrid("SELECT tyo.id_työnjako as id_auti, a.id_auto as id_auto, ty.id_työntekijä as id_työntekijä, tyo.valmis as valmis  FROM työntekijät ty, autot a, työnjako tyo, autojen_tilanne auti WHERE ty.id_työntekijä=auti.id_työntekijä AND a.id_auto=auti.id_auto AND tyo.id_työnjako=auti.id_auti AND auti.valmis ='1'", "valmiit", autojen_tilanne);
+                tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero " +
+                                    "AS työntekijä, a.rekisterinumero AS rekisterinumero  " +
+                                    "FROM työntekijät ty, autot a, työnjako tyo " +
+                                    "WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä AND tyo.valmis ='0' ", 
+                                    "työnjako", työnjako_lista);
+                tkt.paivitaDataGrid("SELECT  a.id_auto as id_auto, tyo.valmis as tilanne  " +
+                                    "FROM autot a, työnjako tyo, autojen_tilanne auti " +
+                                    "WHERE  a.id_auto=auti.id_auto AND auti.tilanne ='valmis'",
+                                    "autojen_tilanne", autojen_tilanne);
 
             }
             

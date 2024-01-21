@@ -51,7 +51,7 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Työnjako">
-                <Grid Background="LightSteelBlue" Margin="32,0,-32,0">
+                <Grid Background="LightSteelBlue">
                     <DataGrid x:Name="työnjako_lista" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="204,30,204,164" AutoGenerateColumns="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Korjausjono" Binding="{Binding Path='id_työnjako'}" IsReadOnly="True"/>
@@ -81,7 +81,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="id" Binding="{Binding Path='id_auti'}" IsReadOnly="True"/>
                             <DataGridTextColumn Header="Auto" Binding="{Binding Path='id_auto'}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Korjaaja" Binding="{Binding Path='id_työntekijä'}" IsReadOnly="True"/>
+                            
                             <DataGridTextColumn Header="Tilanne" Binding="{Binding Path='valmis'}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
