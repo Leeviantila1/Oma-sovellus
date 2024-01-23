@@ -44,11 +44,8 @@ namespace Oma_sovellus
                                     "FROM työntekijät ty, autot a, työnjako tyo " +
                                     "WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä AND tyo.valmis ='0' ",
                                     "työnjako", työnjako_lista);
-            tkt.paivitaDataGrid("SELECT  a.id_auto as id_auto, tyo.valmis as tilanne  " +
-                                "FROM autot a, työnjako tyo, autojen_tilanne auti " +
-                                "WHERE  a.id_auto=auti.id_auto AND auti.tilanne ='1'",
-                                "valmiit", autojen_tilanne);
-
+            
+            
         }
         
         // painike lisää auto
@@ -142,24 +139,29 @@ namespace Oma_sovellus
 
                 SqlConnection kanta = new SqlConnection(polku);
                 kanta.Open();
-          
-            string sql = "UPDATE autojen_tilanne SET tilanne = 'valmis' WHERE id_auto='" + id_auti + "';";
+            //string sql = "INSERT INTO autojen_tilanne (rekisterinumero) SELECT rekisterinumero FROM työnjako ";
+            string sql = "INSERT INTO autojen_tilanne (rekisterinumero, valmis)\r\nSELECT rekisterinumero, 'VALMIS' AS valmis FROM työnjako;\r\n";
+
+
+            //string sql = "UPDATE autojen_tilanne SET valmis = 1 WHERE id_auti='" + id_auti + "';";
 
             SqlCommand komento = new SqlCommand(sql, kanta);
                 komento.ExecuteNonQuery();
                 kanta.Close();
 
-                tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero " +
-                                    "AS työntekijä, a.rekisterinumero AS rekisterinumero  " +
+                tkt.paivitaDataGrid("SELECT tyo.id_työnjako AS id_työnjako, ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero   " +
                                     "FROM työntekijät ty, autot a, työnjako tyo " +
                                     "WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä AND tyo.valmis ='0' ", 
                                     "työnjako", työnjako_lista);
-                tkt.paivitaDataGrid("SELECT  a.id_auto as id_auto, tyo.valmis as tilanne  " +
-                                    "FROM autot a, työnjako tyo, autojen_tilanne auti " +
-                                    "WHERE  a.id_auto=auti.id_auto AND auti.tilanne ='valmis'",
-                                    "autojen_tilanne", autojen_tilanne);
 
-            }
-            
+            /*tkt.paivitaDataGrid("SELECT  auti.id_auti as id_auti, tyo.rekisterinumero as rekisterinumero  " +
+                            "FROM työnjako tyo, autojen_tilanne auti " +
+                            "WHERE tyo.id_työnjako=auti.id_auti and tyo.rekisterinumero=auti.rekisterinumero ",
+                            "työnjako", autojen_tilanne);
+
+            */
+            tkt.paivitaDataGrid("SELECT * FROM autojen_tilanne", "autojen_tilanne", autojen_tilanne);
+        }
+
     }   
 }

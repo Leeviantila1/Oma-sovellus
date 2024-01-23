@@ -76,13 +76,12 @@
                 </Grid>
             </TabItem>
             <TabItem Header="Auton tilanne">
-                <Grid Background="#FFE5E5E5">
+                <Grid Background="LightSteelBlue">
                     <DataGrid x:Name="autojen_tilanne" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="152,77,152,76" AutoGenerateColumns="False" IsSynchronizedWithCurrentItem="False">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="id" Binding="{Binding Path='id_auti'}" IsReadOnly="True"/>
-                            <DataGridTextColumn Header="Auto" Binding="{Binding Path='id_auto'}" IsReadOnly="True"/>
-                            
-                            <DataGridTextColumn Header="Tilanne" Binding="{Binding Path='valmis'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Auto" Binding="{Binding Path='rekisterinumero'}" IsReadOnly="True"/>
+                            <DataGridTextColumn Header="Valmis" Binding="{Binding Path='valmis'}" IsReadOnly="True"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
