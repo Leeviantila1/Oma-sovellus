@@ -20,5 +20,3 @@ SELECT * FROM autot;
 SELECT * FROM työntekijät;
 SELECT * FROM työnjako;
 SELECT * FROM autojen_tilanne;
-
-SELECT ty.työnumero AS työntekijä, a.rekisterinumero AS rekisterinumero  FROM työntekijät ty, autot a, työnjako tyo WHERE a.rekisterinumero=tyo.rekisterinumero AND ty.työnumero=tyo.työntekijä;

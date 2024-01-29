@@ -21,7 +21,7 @@ namespace Oma_sovellus
     {
         private string solun_arvo;
 
-        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\antil\\OneDrive\\Tiedostot\\Tietokanta_oma_sovellus_1.mdf;Integrated Security=True;Connect Timeout=30";
+        string polku = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"C:\\Users\\Leevi Antila\\Documents\\Database_omasovellus.mdf\";Integrated Security=True;Connect Timeout=30";
 
         Tietokantatoiminnot tkt;
 
